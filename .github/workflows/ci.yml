@@ -18,16 +18,16 @@ permissions:
 
 jobs:
   Build-Windows:
-    uses: build.yml
+    uses: ./.github/workflows/build.yml
     with:
       os: windows-latest
 
   Build-Linux:
-    uses: build.yml
+    uses: ./.github/workflows/build.yml
     with:
       os: ubuntu-latest
 
   Build-Mac:
-    uses: build.yml
+    uses: ./.github/workflows/build.yml
     with:
       os: macos-latest
