@@ -1,5 +1,5 @@
 import { SlashCommandPipe } from "@discord-nestjs/common";
-import { Command, DiscordClientProvider, EventParams, Handler, InteractionEvent, Param } from "@discord-nestjs/core";
+import { Command, DiscordClientProvider, EventParams, Handler, InteractionEvent, Param, ParamType } from "@discord-nestjs/core";
 import { ChatInputCommandInteraction, ClientEvents, TextChannel, GuildMemberRoleManager } from "discord.js";
 
 // Authorized roles that can run this command
@@ -12,7 +12,7 @@ const AUTHORIZED_ROLES = [
 const BAN_LOG_CHANNEL_ID = '1449984476418670695'; // Replace with your ban log channel ID
 
 class BanCommandParams {
-  @Param({ description: 'User to ban', required: true })
+  @Param({ description: 'User to ban', required: true, type: ParamType.USER })
   user: string;
 
   @Param({ description: 'Reason for the ban', required: true })
@@ -105,6 +105,7 @@ export class BanCommand {
       }
 
       // Post ban log to the designated channel
+      let banLogMessageUrl = '';
       const banLogChannel = guild.channels.cache.get(BAN_LOG_CHANNEL_ID);
       if (banLogChannel && banLogChannel.isTextBased()) {
         const logMessage = `**User Banned**\n` +
@@ -114,12 +115,13 @@ export class BanCommand {
           `**Messages Deleted:** ${deletedMessageCount}\n` +
           `**Timestamp:** <t:${Math.floor(Date.now() / 1000)}:F>`;
 
-        await banLogChannel.send(logMessage);
+        const sentMessage = await banLogChannel.send(logMessage);
+        banLogMessageUrl = `https://discord.com/channels/${guild.id}/${banLogChannel.id}/${sentMessage.id}`;
       }
 
       // Reply to the user who executed the command
       await interaction.editReply({
-        content: `Successfully banned ${userToBan.tag}. Deleted ${deletedMessageCount} messages from the last 24 hours.`,
+        content: `${member.user.username} used janny\n[View ban log](${banLogMessageUrl})`,
       });
     } catch (error) {
       console.error('Error in ban command:', error);

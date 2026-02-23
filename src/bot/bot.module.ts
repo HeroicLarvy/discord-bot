@@ -9,6 +9,7 @@ import { ConflictServerSubCommand } from './commands/subcommands/conflict.subcom
 import { StartTimeCommand } from './commands/subcommands/starttime.command';
 import { RoleScanCommand } from './commands/subcommands/rolescan.command';
 import { BanCommand } from './commands/subcommands/ban.command';
+import { GuestResetCommand } from './commands/subcommands/guestreset.command';
 import { SwearJarModule } from '../swear-jar/swear-jar.module';
 import { VoiceRolesModule } from '../voice-roles/voice-roles.module';
 import { PonyBotListener } from '../PonyBot/PonyBot.listener';
@@ -31,6 +32,7 @@ import { ReactionHandler } from './events/reaction.handler';
     StartTimeCommand,
     RoleScanCommand,
     BanCommand,
+    GuestResetCommand,
     PonyBotListener,
     ReactionHandler,
   ],
